@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+namespace： 命名空间
+
+	 根据id查询用户信息
+	  只关注sql语句
+	 mapper : 就是编写sql语句的地方
+-->
+<mapper namespace="com.hzit.mapper.UserMapper">
+
+	<select id="selectById" resultType="com.hzit.pojo.User" parameterType="int">
+		SELECT id,user_name as userName , password FROM USER WHERE id = #{id}
+	</select>
+	<!--
+	根据id查询用户信息
+		SELECT * FROM USER WHERE id = 4
+		1.分析sql语句类型 ：查询语句
+		2.分析sql语句的可变参数  什么类型的参数 int
+		3.分析sql语句的返回值
+		select标签：代表这查询语句
+			 parameterType：sql语句需要的参数类型
+
+
+		3.分析sql语句的返回值
+			id = 4
+			user_name = admin
+			password = 123456
+
+		User
+			id
+			userName
+			password
+		resultType ：设置返回值类型 必须填写全类型
+		com.hzit.pojo.User
+
+		id： 给这条sql语句唯一的标识
+	-->
+
+
+	<!--
+	查询全部用户信息
+		SELECT id,user_name AS userName , PASSWORD FROM USER
+			1.分析sql语句类型 ：查询语句
+			2.分析sql语句的可变参数  什么类型的参数 int
+			3.分析sql语句的返回值
+				查询全部用户 ， 返回多个user对象 List<User>
+				resultType: 类型返回的不管是不是集合都是一样
+	-->
+	<select id="selectAll" resultType="com.hzit.pojo.User"  >
+		SELECT id,user_name AS userName , PASSWORD FROM USER
+	</select>
+
+	<!--
+	添加用户信息
+		INSERT INTO `db4`.`user` ( `user_name`, `password`)
+		VALUES
+		('user_name', 'password');
+
+			1.分析sql语句类型 ：insert 插入类型的sql语句
+			2.分析sql语句的可变参数  User对象
+			3.分析sql语句的返回值 所有添加删除修改的返回值都是int类型  不需要进行写的 自动返回int
+				影响行数 int
+
+
+				public class User {
+
+				private Integer id;
+
+				private String userName;
+
+				private String password;
+
+			#{}等于jdbc的?
+			#{} : 可以获取对象和普通类型的值
+	-->
+	<insert id="insert"  parameterType="com.hzit.pojo.User" >
+		INSERT INTO `user` ( `user_name`, `password`)
+		VALUES
+		(#{userName}, #{password});
+	</insert>
+
+	<!--
+	根据id修改用户信息
+	UPDATE
+	  `db4`.`user`
+	SET
+	  `user_name` = 'user_name',
+	  `password` = 'password'
+	WHERE `id` = 'id';
+		1.分析sql语句类型 ：update 修改类型的sql语句
+		2.分析sql语句的可变参数  User对象
+		3.分析sql语句的返回值 所有添加删除修改的返回值都是int类型  不需要进行写的 自动返回int
+			影响行数 int
+	-->
+	<update id="updateById"  parameterType="com.hzit.pojo.User" >
+		UPDATE
+			  `db4`.`user`
+			SET
+			  `user_name` = #{userName},
+			  `password` = #{password}
+			WHERE `id` = #{id};
+	</update>
+
+
+
+</mapper>
